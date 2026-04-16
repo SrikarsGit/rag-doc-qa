@@ -1,0 +1,6 @@
+CREATE EXTENSION IF NOT EXISTS vector;
+
+CREATE TABLE IF NOT EXISTS sample (
+    id INT,
+    name TEXT
+);
