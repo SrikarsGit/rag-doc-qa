@@ -17,3 +17,7 @@ wheels/
 
 # Local Postgres bind-mount leftovers
 pgvector/
+
+# misc
+.python-version
+
