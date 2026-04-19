@@ -1,10 +1,8 @@
-from griffe import docstring_warning
 from openai import AsyncOpenAI
 from llama_index.readers.file import PDFReader 
 from llama_index.core.node_parser import SentenceSplitter 
-from config import settings
+from app.config import settings
 from pathlib import Path
-import asyncio
 
 openai_client = AsyncOpenAI(
     api_key=settings.openai_api_key

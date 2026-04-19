@@ -5,16 +5,14 @@ import inngest.fast_api
 from inngest.experimental import ai
 from dotenv import load_dotenv
 import uuid 
-import os 
 from pathlib import Path
-import datetime 
-from config import settings
+from app.config import settings
 from contextlib import asynccontextmanager
 from openai import embeddings
-from db.pool import create_pool
-from db.vector_store import upsert, search
-from data_loader import load_and_chunk_pdf, embed_chunks
-from model import RAGChunkAndSrc, RAGUpsertResult, RAGQueryResult, RAGSearchResult
+from app.db.pool import create_pool
+from app.db.vector_store import upsert, search
+from app.document_ingestion import load_and_chunk_pdf, embed_chunks
+from app.model import RAGChunkAndSrc, RAGUpsertResult, RAGQueryResult, RAGSearchResult
 
 load_dotenv()
 
@@ -45,8 +43,10 @@ app = FastAPI(lifespan=lifespan)
 async def rag_ingest_pdf(ctx: inngest.Context):
 
     def _load(ctx) -> RAGChunkAndSrc:
+
         file_path = ctx.event.data["pdf_path"]
         source_id = ctx.event.data.get("source_id", file_path)
+
         chunks = load_and_chunk_pdf(path=Path(file_path))
       
         return RAGChunkAndSrc(chunks=chunks, source_id=source_id)

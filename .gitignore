@@ -20,4 +20,6 @@ pgvector/
 
 # misc
 .python-version
+uploads/
+
 

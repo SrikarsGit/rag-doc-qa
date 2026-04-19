@@ -1,7 +1,7 @@
 from os import name
 
 import asyncpg
-from config import settings
+from app.config import settings
 
 
 # Create connection pooling with asyncpg

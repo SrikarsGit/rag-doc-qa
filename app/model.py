@@ -1,8 +1,9 @@
-from pydantic import BaseModel, Field
+from pathlib import Path
+from pydantic import BaseModel
 
 class RAGChunkAndSrc(BaseModel):
     chunks: list[str]
-    source_id: str | None
+    source_id: str | Path | None
 
 class RAGUpsertResult(BaseModel):
     ingested: int 
