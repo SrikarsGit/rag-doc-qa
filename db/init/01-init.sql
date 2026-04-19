@@ -1,10 +1,10 @@
 CREATE EXTENSION IF NOT EXISTS vector;
 
 CREATE TABLE IF NOT EXISTS documents (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    doc_id TEXT UNIQUE,
+    doc_id UUID PRIMARY KEY,
     payload JSONB,
-    embedding vector(3072)
+    embedding vector(3072),
+    created_at TIMESTAMP DEFAULT NOW()
 );
 
 -- -- Create index on embedding column using HNSW

@@ -1,9 +1,14 @@
 from asyncpg import Pool
+import json 
 
-async def upsert(pool: Pool, data: list[list]) -> None:
+async def upsert(pool: Pool, ids, payloads, vecs) -> None:
 
-    for d in data:
-        d[-1] = f'{d[-1]}'
+    if not (len(ids) == len(payloads) == len(vecs)):
+        raise ValueError("ids, payloads, and vecs must have the same length")
+    
+    vecs = list(str(v) for v in vecs)
+    payloads = list(json.dumps(payload) for payload in payloads)
+    data = list(zip(ids, payloads, vecs))
 
     async with pool.acquire() as conn:
         await conn.executemany(
@@ -40,11 +45,14 @@ async def search(pool: Pool, query_vector: list[float], top_k: int = 5):
 
         for result in results:
             payload = result["payload"]
+            if isinstance(payload, str):
+                payload = json.loads(payload)
             text = payload.get("text")
             source = payload.get("source")
 
             if text:
                 context.append(text)
+            if source:
                 sources.add(source)
 
         return {"contexts": context, "sources": list(sources)}
